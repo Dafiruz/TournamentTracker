@@ -15,6 +15,7 @@ deck assignments and brackets. Built with Kotlin and Jetpack Compose.
 | Tournament statuses: In progress / Paused / Done, full history on home screen | :construction: planned |
 | Simple two-player life tracker (no commander damage, no poison) | :construction: planned |
 | Project skeleton (Gradle, Compose, theme, app icon) | :white_check_mark: done |
+| Room database: tournaments, players, decks, matches (with byes) | :white_check_mark: done |
 
 ## Tech
 
