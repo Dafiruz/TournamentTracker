@@ -16,6 +16,7 @@ deck assignments and brackets. Built with Kotlin and Jetpack Compose.
 | Tournament statuses: In progress / Paused / Done, full history on home screen | :white_check_mark: done |
 | Pause / Resume tournaments, delete with confirmation | :white_check_mark: done |
 | Simple two-player life tracker (no commander damage, no poison) | :white_check_mark: done |
+| Full-screen face-off life tracker: 50/50 split, top player rotated 180°, tap left = −1 / right = +1 | :white_check_mark: done |
 
 ## Bracket rules
 
