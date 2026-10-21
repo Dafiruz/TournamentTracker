@@ -18,12 +18,13 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -52,6 +53,7 @@ import com.tournamenttracker.app.data.entity.PlayerEntity
 import com.tournamenttracker.app.data.entity.TournamentStatus
 import com.tournamenttracker.app.ui.components.StatusChip
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TournamentScreen(
     tournamentId: Long,
@@ -72,7 +74,7 @@ fun TournamentScreen(
                 title = { Text(tournament?.name ?: "Tournament") },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
-                        Icon(Icons.Filled.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
                     }
                 },
                 actions = {
@@ -252,7 +254,7 @@ private fun MatchCard(
                 isWinner = player1 != null && match.winnerId == player1.id,
                 emptyLabel = if (hasBye) "Bye" else "TBD",
                 editable = editable,
-                onClick = { player1?.let(onPickWinner) },
+                onClick = { player1?.let { onPickWinner(it.id) } },
                 modifier = Modifier.weight(1f),
             )
             Text(
@@ -267,7 +269,7 @@ private fun MatchCard(
                 isWinner = player2 != null && match.winnerId == player2.id,
                 emptyLabel = if (hasBye) "Bye" else "TBD",
                 editable = editable,
-                onClick = { player2?.let(onPickWinner) },
+                onClick = { player2?.let { onPickWinner(it.id) } },
                 modifier = Modifier.weight(1f),
             )
             if (onOpenLifeTracker != null) {

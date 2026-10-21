@@ -40,7 +40,7 @@ object MatchPairer {
                     add(DraftMatch(firstRound, i, shuffled[2 * i], shuffled[2 * i + 1]))
                 }
                 for (i in realMatchCount until slotCount) {
-                    add(DraftMatch(firstRound, i, shuffled[i], null))
+                    add(DraftMatch(firstRound, i, shuffled[realMatchCount + i], null))
                 }
             }
             val mirrors = mirrorCount(matches)

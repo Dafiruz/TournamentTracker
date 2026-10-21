@@ -1,5 +1,6 @@
 package com.tournamenttracker.app.data
 
+import androidx.room.withTransaction
 import com.tournamenttracker.app.data.db.AppDatabase
 import com.tournamenttracker.app.data.db.TournamentDao
 import com.tournamenttracker.app.data.db.TournamentWithDetails
