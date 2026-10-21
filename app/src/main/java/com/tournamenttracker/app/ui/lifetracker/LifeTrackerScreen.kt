@@ -41,6 +41,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -48,6 +49,9 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 /**
  * A simple two-player life counter. No commander damage, no poison.
@@ -262,6 +266,21 @@ private fun PlayerPanel(
     onDelta: (Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    // Cumulative change since the last tap, shown briefly above the number.
+    var pending by remember { mutableIntStateOf(0) }
+    val scope = rememberCoroutineScope()
+    var clearJob by remember { mutableStateOf<Job?>(null) }
+
+    val onTap: (Int) -> Unit = { delta ->
+        pending += delta
+        clearJob?.cancel()
+        clearJob = scope.launch {
+            delay(3_000)
+            pending = 0
+        }
+        onDelta(delta)
+    }
+
     BoxWithConstraints(modifier = modifier) {
         val numberSize = (maxHeight * 0.40f).value.sp
         Column(modifier = Modifier.fillMaxSize()) {
@@ -277,7 +296,7 @@ private fun PlayerPanel(
                 Row(modifier = Modifier.fillMaxSize()) {
                     TapZone(
                         label = "\u22121",
-                        onClick = { onDelta(-1) },
+                        onClick = { onTap(-1) },
                         modifier = Modifier
                             .weight(1f)
                             .fillMaxHeight(),
@@ -285,7 +304,7 @@ private fun PlayerPanel(
                     )
                     TapZone(
                         label = "+1",
-                        onClick = { onDelta(+1) },
+                        onClick = { onTap(+1) },
                         modifier = Modifier
                             .weight(1f)
                             .fillMaxHeight(),
@@ -293,6 +312,24 @@ private fun PlayerPanel(
                     )
                 }
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    // Reserved space keeps the number from jumping around.
+                    Box(
+                        modifier = Modifier.height(32.dp),
+                        contentAlignment = Alignment.Center,
+                    ) {
+                        if (pending != 0) {
+                            Text(
+                                text = if (pending > 0) "+$pending" else "$pending",
+                                style = MaterialTheme.typography.titleLarge,
+                                fontWeight = FontWeight.Bold,
+                                color = if (pending > 0) {
+                                    MaterialTheme.colorScheme.primary
+                                } else {
+                                    MaterialTheme.colorScheme.error
+                                },
+                            )
+                        }
+                    }
                     Text(
                         text = "$life",
                         fontSize = numberSize,
