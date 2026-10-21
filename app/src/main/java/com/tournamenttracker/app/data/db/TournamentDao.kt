@@ -30,10 +30,10 @@ interface TournamentDao {
     suspend fun insertTournament(tournament: TournamentEntity): Long
 
     @Insert
-    suspend fun insertPlayers(players: List<PlayerEntity>)
+    suspend fun insertPlayers(players: List<PlayerEntity>): List<Long>
 
     @Insert
-    suspend fun insertDecks(decks: List<DeckEntity>)
+    suspend fun insertDecks(decks: List<DeckEntity>): List<Long>
 
     @Insert
     suspend fun insertMatches(matches: List<MatchEntity>)

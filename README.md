@@ -14,6 +14,9 @@ deck assignments and brackets. Built with Kotlin and Jetpack Compose.
 | Set match winners, auto-advance, champion when the final finishes | :construction: planned |
 | Tournament statuses: In progress / Paused / Done, full history on home screen | :construction: planned |
 | Simple two-player life tracker (no commander damage, no poison) | :construction: planned |
+| Bracket generator: 2-32 players, random byes, 3-player quarter-final rule | :white_check_mark: done |
+| Balanced random deck assignment (battlebox style, duplicates when players > decks) | :white_check_mark: done |
+| Mirror-match avoidance when pairing (falls back when unavoidable) | :white_check_mark: done |
 | Project skeleton (Gradle, Compose, theme, app icon) | :white_check_mark: done |
 | Room database: tournaments, players, decks, matches (with byes) | :white_check_mark: done |
 
