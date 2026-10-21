@@ -114,6 +114,14 @@ class TournamentRepository(
                 )
             }
         }
+        // Bye winners advance into the next round immediately.
+        matches.forEach { match ->
+            if (match.winnerId != null &&
+                (match.player1Id == null || match.player2Id == null)
+            ) {
+                cascadeInPlace(matches, match)
+            }
+        }
         dao.insertMatches(matches)
         tournamentId
     }
@@ -195,4 +203,24 @@ class TournamentRepository(
     /** Runs [block] inside a database transaction. */
     suspend fun <T> withTransaction(block: suspend () -> T): T =
         db.withTransaction { block() }
+
+    /** Fills the parent slot of [changed] and cascades upward, in place. */
+    private fun cascadeInPlace(allMatches: MutableList<MatchEntity>, changed: MatchEntity) {
+        var current = changed
+        while (true) {
+            val parentIndex = allMatches.indexOfFirst {
+                it.roundNumber == current.roundNumber + 1 &&
+                    it.matchIndex == current.matchIndex / 2
+            }
+            if (parentIndex < 0) break
+            val parent = allMatches[parentIndex]
+            val updated = if (current.matchIndex % 2 == 0) {
+                parent.copy(player1Id = current.winnerId)
+            } else {
+                parent.copy(player2Id = current.winnerId)
+            }
+            allMatches[parentIndex] = updated
+            current = updated
+        }
+    }
 }
