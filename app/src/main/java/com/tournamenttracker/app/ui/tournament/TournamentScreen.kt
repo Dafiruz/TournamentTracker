@@ -242,6 +242,9 @@ private fun MatchCard(
     val player1 = match.player1Id?.let { playerById[it] }
     val player2 = match.player2Id?.let { playerById[it] }
     val hasBye = (match.player1Id == null) != (match.player2Id == null)
+    // Only first-round matches can hold a real bye; empty slots elsewhere
+    // are simply waiting for the feeder match winner.
+    val emptyLabel = if (match.roundNumber == 0 && hasBye) "Bye" else "TBD"
 
     Card(modifier = Modifier.fillMaxWidth()) {
         Row(
@@ -252,7 +255,7 @@ private fun MatchCard(
                 player = player1,
                 deckName = player1?.assignedDeckId?.let { deckById[it]?.name },
                 isWinner = player1 != null && match.winnerId == player1.id,
-                emptyLabel = if (hasBye) "Bye" else "TBD",
+                emptyLabel = emptyLabel,
                 editable = editable,
                 onClick = { player1?.let { onPickWinner(it.id) } },
                 modifier = Modifier.weight(1f),
@@ -267,7 +270,7 @@ private fun MatchCard(
                 player = player2,
                 deckName = player2?.assignedDeckId?.let { deckById[it]?.name },
                 isWinner = player2 != null && match.winnerId == player2.id,
-                emptyLabel = if (hasBye) "Bye" else "TBD",
+                emptyLabel = emptyLabel,
                 editable = editable,
                 onClick = { player2?.let { onPickWinner(it.id) } },
                 modifier = Modifier.weight(1f),
