@@ -48,6 +48,9 @@ import com.tournamenttracker.app.domain.model.Round
 data class MatchEntity(
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
     val tournamentId: Long,
+    /** 0-based structural round, used for winner progression. */
+    val roundNumber: Int,
+    /** Display name of the round ("Quarter Finals", "Finals", ...). */
     val round: Round,
     val matchIndex: Int,
     val player1Id: Long? = null,

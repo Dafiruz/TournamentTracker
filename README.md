@@ -7,18 +7,13 @@ deck assignments and brackets. Built with Kotlin and Jetpack Compose.
 
 | Feature | Status |
 | --- | --- |
-| Add player names and deck names per tournament | :construction: planned |
-| Randomize deck assignment per player (battlebox style, duplicates allowed when players > decks) | :construction: planned |
-| Single-elimination brackets: 2, 3, 4, 8, 16 or 32 players, with random byes | :construction: planned |
-| Match pairing avoids mirror matches (same deck) whenever possible | :construction: planned |
-| Set match winners, auto-advance, champion when the final finishes | :construction: planned |
-| Tournament statuses: In progress / Paused / Done, full history on home screen | :construction: planned |
+| Add player names and deck names per tournament | :white_check_mark: done |
+| Randomize deck assignment per player (battlebox style, duplicates allowed when players > decks) | :white_check_mark: done |
+| Single-elimination brackets: 2, 3, 4, 8, 16 or 32 players, with random byes | :white_check_mark: done |
+| Match pairing avoids mirror matches (same deck) whenever possible | :white_check_mark: done |
+| Set match winners, auto-advance, champion when the final finishes | :white_check_mark: done |
+| Tournament statuses: In progress / Paused / Done, full history on home screen | :white_check_mark: done |
 | Simple two-player life tracker (no commander damage, no poison) | :construction: planned |
-| Home screen: tournament history list with status chips and champions | :white_check_mark: done |
-| New tournament flow: names + decks, randomize preview, re-roll decks/matches | :white_check_mark: done |
-| Bracket generator: 2-32 players, random byes, 3-player quarter-final rule | :white_check_mark: done |
-| Balanced random deck assignment (battlebox style, duplicates when players > decks) | :white_check_mark: done |
-| Mirror-match avoidance when pairing (falls back when unavoidable) | :white_check_mark: done |
 | Project skeleton (Gradle, Compose, theme, app icon) | :white_check_mark: done |
 | Room database: tournaments, players, decks, matches (with byes) | :white_check_mark: done |
 
