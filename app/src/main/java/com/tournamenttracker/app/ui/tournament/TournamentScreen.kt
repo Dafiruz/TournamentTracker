@@ -21,6 +21,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
@@ -55,6 +56,7 @@ import com.tournamenttracker.app.ui.components.StatusChip
 fun TournamentScreen(
     tournamentId: Long,
     onBack: () -> Unit,
+    onOpenLifeTracker: (String, String) -> Unit,
     viewModel: TournamentViewModel = viewModel(factory = TournamentViewModel.Factory),
 ) {
     val entry by viewModel.tournament.collectAsState()
@@ -107,6 +109,7 @@ fun TournamentScreen(
             TournamentContent(
                 entry = current!!,
                 onPickWinner = viewModel::pickWinner,
+                onOpenLifeTracker = onOpenLifeTracker,
                 modifier = Modifier.padding(innerPadding),
             )
         }
@@ -140,6 +143,7 @@ fun TournamentScreen(
 private fun TournamentContent(
     entry: TournamentWithDetails,
     onPickWinner: (Long, Long) -> Unit,
+    onOpenLifeTracker: (String, String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val tournament = entry.tournament
@@ -205,12 +209,19 @@ private fun TournamentContent(
                     )
                 }
                 items(matches.sortedBy { it.matchIndex }) { match ->
+                    val player1 = match.player1Id?.let { playerById[it] }
+                    val player2 = match.player2Id?.let { playerById[it] }
                     MatchCard(
                         match = match,
                         playerById = playerById,
                         deckById = deckById,
                         editable = editable,
                         onPickWinner = { playerId -> onPickWinner(match.id, playerId) },
+                        onOpenLifeTracker = if (player1 != null && player2 != null) {
+                            { onOpenLifeTracker(player1.name, player2.name) }
+                        } else {
+                            null
+                        },
                     )
                 }
             }
@@ -224,6 +235,7 @@ private fun MatchCard(
     deckById: Map<Long, DeckEntity>,
     editable: Boolean,
     onPickWinner: (Long) -> Unit,
+    onOpenLifeTracker: (() -> Unit)?,
 ) {
     val player1 = match.player1Id?.let { playerById[it] }
     val player2 = match.player2Id?.let { playerById[it] }
@@ -258,6 +270,15 @@ private fun MatchCard(
                 onClick = { player2?.let(onPickWinner) },
                 modifier = Modifier.weight(1f),
             )
+            if (onOpenLifeTracker != null) {
+                IconButton(onClick = onOpenLifeTracker) {
+                    Icon(
+                        Icons.Filled.FavoriteBorder,
+                        contentDescription = "Open life tracker",
+                        modifier = Modifier.size(20.dp),
+                    )
+                }
+            }
         }
     }
 }

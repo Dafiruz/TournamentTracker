@@ -14,9 +14,11 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -38,12 +40,25 @@ import java.util.Date
 fun HomeScreen(
     onOpenTournament: (Long) -> Unit,
     onCreateTournament: () -> Unit,
+    onOpenLifeTracker: () -> Unit,
     viewModel: HomeViewModel = viewModel(factory = HomeViewModel.Factory),
 ) {
     val tournaments by viewModel.tournaments.collectAsState()
 
     Scaffold(
-        topBar = { TopAppBar(title = { Text("Tournament Tracker") }) },
+        topBar = {
+            TopAppBar(
+                title = { Text("Tournament Tracker") },
+                actions = {
+                    IconButton(onClick = onOpenLifeTracker) {
+                        Icon(
+                            Icons.Filled.Favorite,
+                            contentDescription = "Life tracker",
+                        )
+                    }
+                },
+            )
+        },
         floatingActionButton = {
             FloatingActionButton(onClick = onCreateTournament) {
                 Icon(Icons.Filled.Add, contentDescription = "New tournament")
